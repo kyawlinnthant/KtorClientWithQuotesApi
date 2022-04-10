@@ -87,4 +87,6 @@ dependencies {
     implementation "org.jetbrains.kotlinx:kotlinx-coroutines-android:$coroutines_v"
     implementation "org.jetbrains.kotlinx:kotlinx-coroutines-core:$coroutines_v"
 
+    implementation "com.google.accompanist:accompanist-systemuicontroller:0.17.0"
+
 }

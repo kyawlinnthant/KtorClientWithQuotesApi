@@ -15,7 +15,7 @@ import androidx.compose.ui.unit.dp
 import klt.mdy.kotlinserializationtest.model.Quote
 
 @Composable
-fun QuotesContent(
+fun QuotesSuccess(
     modifier: Modifier = Modifier,
     quote: Quote
 ) {
@@ -61,7 +61,7 @@ fun QuotesContent(
 @Preview(showBackground = true)
 private fun Preview() {
     Surface {
-        QuotesContent(
+        QuotesSuccess(
             quote = Quote(
                 id = 1,
                 data = "This is the quote from server that we want to display in screen",

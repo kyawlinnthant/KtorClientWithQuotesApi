@@ -9,6 +9,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
+import klt.mdy.kotlinserializationtest.common.Resource
 import klt.mdy.kotlinserializationtest.ui.QuotesViewModel
 import klt.mdy.kotlinserializationtest.ui.screen.udf.Actions
 import klt.mdy.kotlinserializationtest.ui.screen.udf.Events
@@ -36,7 +37,7 @@ fun QuotesView() {
         topBar = {
             TopAppBar(
                 backgroundColor = MaterialTheme.colors.primary,
-                contentColor = MaterialTheme.colors.surface,
+                contentColor = MaterialTheme.colors.onSurface,
                 elevation = 1.dp,
                 content = {
                     Text(text = "New quotes and have fun")
@@ -56,7 +57,7 @@ fun QuotesView() {
                 },
                 shape = RoundedCornerShape(16.dp),
                 backgroundColor = MaterialTheme.colors.primary,
-                contentColor = MaterialTheme.colors.surface,
+                contentColor = MaterialTheme.colors.onSurface,
             ) {
                 Icon(
                     imageVector = Icons.Default.KeyboardArrowRight,
@@ -65,7 +66,18 @@ fun QuotesView() {
             }
         },
         content = {
-            QuotesContent(quote = state.quote)
+            when (state.quote) {
+                is Resource.Error -> {
+                    QuotesError(error = state.quote.message ?: "Error")
+                }
+                is Resource.Loading -> {
+                    QuotesLoading()
+                }
+                is Resource.Success -> {
+                    QuotesSuccess(quote = state.quote.data!!)
+                }
+            }
+
         }
     )
 }

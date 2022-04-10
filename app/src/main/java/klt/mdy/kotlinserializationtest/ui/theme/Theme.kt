@@ -5,26 +5,16 @@ import androidx.compose.material.MaterialTheme
 import androidx.compose.material.darkColors
 import androidx.compose.material.lightColors
 import androidx.compose.runtime.Composable
+import com.google.accompanist.systemuicontroller.rememberSystemUiController
 
 private val DarkColorPalette = darkColors(
-    primary = Purple200,
-    primaryVariant = Purple700,
-    secondary = Teal200
+    primary = BlueGray700,
+    secondary = LightGreen200,
 )
 
 private val LightColorPalette = lightColors(
-    primary = Purple500,
-    primaryVariant = Purple700,
-    secondary = Teal200
-
-    /* Other default colors to override
-    background = Color.White,
-    surface = Color.White,
-    onPrimary = Color.White,
-    onSecondary = Color.Black,
-    onBackground = Color.Black,
-    onSurface = Color.Black,
-    */
+    primary = Amber500,
+    secondary = LightGreen900,
 )
 
 @Composable
@@ -32,6 +22,23 @@ fun KotlinSerializationTestTheme(
     darkTheme: Boolean = isSystemInDarkTheme(),
     content: @Composable () -> Unit
 ) {
+
+    val systemUiController = rememberSystemUiController()
+    if (darkTheme) {
+        systemUiController.setSystemBarsColor(
+            color = BlueGray700
+        )
+        systemUiController.setStatusBarColor(
+            color = BlueGray700
+        )
+    } else {
+        systemUiController.setSystemBarsColor(
+            color = Amber500
+        )
+        systemUiController.setStatusBarColor(
+            color = Amber500
+        )
+    }
     val colors = if (darkTheme) {
         DarkColorPalette
     } else {

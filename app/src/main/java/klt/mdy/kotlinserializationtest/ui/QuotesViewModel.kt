@@ -42,28 +42,9 @@ class QuotesViewModel @Inject constructor(
     private fun fetchNewRandomQuote() {
         viewModelScope.launch {
             repo.fetchNewQuote().collect {
-                when (it) {
-                    is Resource.Error -> {
-                        _events.emit(
-                            value = Events.ShowSnack(
-                                message = it.message ?: "Error"
-                            )
-                        )
-                    }
-                    is Resource.Loading -> {
-                        //todo : ui loading states
-                        _events.emit(
-                            value = Events.ShowSnack(
-                                message = it.message ?: "Loading"
-                            )
-                        )
-                    }
-                    is Resource.Success -> {
-                        _states.value = states.value.copy(
-                            quote = it.data ?: Quote()
-                        )
-                    }
-                }
+                _states.value = states.value.copy(
+                    quote = it
+                )
             }
         }
     }
