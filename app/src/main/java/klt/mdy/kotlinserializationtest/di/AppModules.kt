@@ -1,5 +1,6 @@
 package klt.mdy.kotlinserializationtest.di
 
+import android.util.Log
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -9,10 +10,13 @@ import io.ktor.client.engine.cio.*
 import io.ktor.client.features.*
 import io.ktor.client.features.json.*
 import io.ktor.client.features.json.serializer.*
+import io.ktor.client.features.logging.*
+import io.ktor.client.features.observer.*
+import io.ktor.client.request.*
+import io.ktor.http.*
 import io.ktor.util.network.*
 import klt.mdy.kotlinserializationtest.repo.QuotesRepository
 import klt.mdy.kotlinserializationtest.repo.QuotesRepositoryImpl
-import kotlinx.serialization.json.Json
 import javax.inject.Singleton
 
 @Module
@@ -20,23 +24,50 @@ import javax.inject.Singleton
 object AppModules {
     @Provides
     @Singleton
-    fun providesHttpClient() : HttpClient{
+    fun providesHttpClient(): HttpClient {
         return try {
-            HttpClient(CIO){
-                install(JsonFeature){
-                    serializer = KotlinxSerializer(Json)
+            HttpClient(CIO) {
+                install(JsonFeature) {
+                    serializer = KotlinxSerializer(
+                        kotlinx.serialization.json.Json {
+                            prettyPrint = true
+                            isLenient = true
+                            ignoreUnknownKeys = true
+                        })
                 }
-                install(HttpTimeout){
-                    requestTimeoutMillis = 2000L
+                install(HttpTimeout) {
+                    requestTimeoutMillis = 10000L
+                }
+                install(Logging) {
+                    logger = object : Logger {
+                        override fun log(message: String) {
+                            Log.v("client", message)
+                        }
+                    }
+                    level = LogLevel.ALL
+                }
+                install(ResponseObserver) {
+                    onResponse { response ->
+                        Log.d("HTTP status : ", "${response.status.value}")
+                    }
+                }
+                install(DefaultRequest) {
+                    header(
+                        key = HttpHeaders.ContentType,
+                        value = ContentType.Application.Json
+                    )
                 }
             }
-        }catch (e :UnresolvedAddressException ){
+        } catch (e: UnresolvedAddressException) {
             throw UnresolvedAddressException()
+        } catch (e: Exception) {
+            throw Exception()
         }
     }
+
     @Provides
     @Singleton
-    fun providesQuoteRepository(client : HttpClient) : QuotesRepository {
+    fun providesQuoteRepository(client: HttpClient): QuotesRepository {
         return QuotesRepositoryImpl(client = client)
     }
 }

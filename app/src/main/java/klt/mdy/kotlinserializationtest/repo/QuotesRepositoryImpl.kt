@@ -30,7 +30,7 @@ class QuotesRepositoryImpl @Inject constructor(
                             append("X-RapidAPI-Key", BuildConfig.API_KEY)
                         }
                         timeout {
-                            requestTimeoutMillis = 2000L
+                            requestTimeoutMillis = 10000L
                         }
                     }.toVo()
                 )
