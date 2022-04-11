@@ -1,5 +1,7 @@
 package klt.mdy.kotlinserializationtest.common
 
+import io.ktor.client.features.*
+import io.ktor.network.sockets.*
 import java.io.IOException
 
 sealed class Resource<T>(
@@ -20,6 +22,12 @@ fun <T> safeApiCall(
     } catch (e: Exception) {
         Resource.Error(e.message ?: e.toString())
     } catch (e: IOException) {
+        Resource.Error(e.message ?: e.toString())
+    } catch (e : HttpRequestTimeoutException){
+        Resource.Error(e.message ?: e.toString())
+    }catch (e : ConnectTimeoutException){
+        Resource.Error(e.message ?: e.toString())
+    }catch (e : SocketTimeoutException){
         Resource.Error(e.message ?: e.toString())
     }
 }

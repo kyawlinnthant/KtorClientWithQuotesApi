@@ -1,6 +1,7 @@
 package klt.mdy.kotlinserializationtest.repo
 
 import io.ktor.client.*
+import io.ktor.client.features.*
 import io.ktor.client.request.*
 import io.ktor.http.*
 import klt.mdy.kotlinserializationtest.BuildConfig
@@ -27,6 +28,9 @@ class QuotesRepositoryImpl @Inject constructor(
                         headers {
                             append("X-RapidAPI-Host", "quotes15.p.rapidapi.com")
                             append("X-RapidAPI-Key", BuildConfig.API_KEY)
+                        }
+                        timeout {
+                            requestTimeoutMillis = 2000L
                         }
                     }.toVo()
                 )

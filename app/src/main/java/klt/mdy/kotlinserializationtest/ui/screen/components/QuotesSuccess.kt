@@ -3,6 +3,8 @@ package klt.mdy.kotlinserializationtest.ui.screen.components
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Surface
 import androidx.compose.material.Text
@@ -19,42 +21,52 @@ fun QuotesSuccess(
     modifier: Modifier = Modifier,
     quote: Quote
 ) {
-    Column(modifier = modifier.fillMaxSize()) {
-        Text(
-            modifier = modifier
-                .fillMaxWidth()
-                .padding(16.dp),
-            text = quote.data,
-            style = MaterialTheme.typography.h4
+    BoxWithConstraints {
+        Box(modifier =modifier
+            .fillMaxSize()
+            .verticalScroll(rememberScrollState())
         )
-        Text(
+        Column(
             modifier = modifier
-                .fillMaxWidth()
-                .padding(
-                    end = 32.dp
-                ),
-            text = quote.writer,
-            style = MaterialTheme.typography.subtitle1,
-            textAlign = TextAlign.End,
-            fontStyle = FontStyle.Italic,
-
-            )
-        LazyColumn(
-            contentPadding = PaddingValues(
-                start = 16.dp
-            )
+                .fillMaxSize()
         ) {
-            items(quote.tags) { item ->
-                Text(
-                    text = "#$item",
-                    style = MaterialTheme.typography.overline,
-                    color = MaterialTheme.colors.secondary,
-                )
-            }
-        }
-        Spacer(modifier = modifier.height(16.dp))
+            Text(
+                modifier = modifier
+                    .fillMaxWidth()
+                    .padding(16.dp),
+                text = quote.data,
+                style = MaterialTheme.typography.h4
+            )
+            Text(
+                modifier = modifier
+                    .fillMaxWidth()
+                    .padding(
+                        end = 32.dp
+                    ),
+                text = quote.writer,
+                style = MaterialTheme.typography.subtitle1,
+                textAlign = TextAlign.End,
+                fontStyle = FontStyle.Italic,
 
+                )
+            LazyColumn(
+                contentPadding = PaddingValues(
+                    start = 16.dp
+                )
+            ) {
+                items(quote.tags) { item ->
+                    Text(
+                        text = "#$item",
+                        style = MaterialTheme.typography.overline,
+                        color = MaterialTheme.colors.secondary,
+                    )
+                }
+            }
+            Spacer(modifier = modifier.height(16.dp))
+
+        }
     }
+
 }
 
 @Composable
