@@ -36,7 +36,7 @@ fun QuotesSuccess(
                 modifier = modifier
                     .fillMaxWidth()
                     .padding(16.dp),
-                text = quote.data,
+                text = quote.text,
                 style = MaterialTheme.typography.h4
             )
         }
@@ -47,19 +47,19 @@ fun QuotesSuccess(
                     .padding(
                         end = 32.dp
                     ),
-                text = quote.writer,
+                text = quote.author,
                 style = MaterialTheme.typography.subtitle1,
                 textAlign = TextAlign.End,
                 fontStyle = FontStyle.Italic,
 
                 )
         }
-        items(items = quote.tags) { item ->
+        item {
             Text(
                 modifier = modifier
                     .fillMaxWidth()
                     .padding(start = 32.dp),
-                text = "#$item",
+                text = "#${quote.category}",
                 style = MaterialTheme.typography.overline,
                 color = MaterialTheme.colors.secondary,
             )
@@ -79,15 +79,9 @@ private fun Preview() {
         QuotesSuccess(
             quote = Quote(
                 id = 1,
-                data = "This is the quote from server that we want to display in screen",
-                writer = "Writer",
-                tags = listOf(
-                    "Love",
-                    "Sex",
-                    "Drug",
-                    "Eat",
-                    "Sleep"
-                )
+                text = "This is the quote from server that we want to display in screen",
+                author = "Writer",
+                category = "Love"
             )
         )
     }

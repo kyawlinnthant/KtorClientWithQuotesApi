@@ -4,20 +4,18 @@ import klt.mdy.kotlinserializationtest.model.Quote
 import kotlinx.serialization.Serializable
 
 @Serializable
-data class RandomQuotesDto(
-    val id: Long,
-    val language_code: String,
-    val originator: Originator,
-    val content: String,
-    val tags: List<String>,
-    val url: String,
+data class RandomQuoteDto(
+    val id : Long,
+    val text : String,
+    val author : String,
+    val category : String
 ) {
     fun toVo(): Quote {
         return Quote(
             id = id,
-            data = content,
-            writer = originator.name,
-            tags = tags,
+            author = author,
+            category = category,
+            text =  text
         )
     }
 }

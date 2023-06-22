@@ -8,7 +8,7 @@ import klt.mdy.kotlinserializationtest.BuildConfig
 import klt.mdy.kotlinserializationtest.common.Endpoints
 import klt.mdy.kotlinserializationtest.common.Resource
 import klt.mdy.kotlinserializationtest.common.safeApiCall
-import klt.mdy.kotlinserializationtest.data.RandomQuotesDto
+import klt.mdy.kotlinserializationtest.data.RandomQuoteDto
 import klt.mdy.kotlinserializationtest.model.Quote
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
@@ -23,16 +23,16 @@ class QuotesRepositoryImpl @Inject constructor(
             emit(Resource.Loading())
             emit(
                 safeApiCall(
-                    response = client.request<RandomQuotesDto>(request) {
+                    response = client.request<List<RandomQuoteDto>>(request) {
                         method = HttpMethod.Get
                         headers {
-                            append("X-RapidAPI-Host", "quotes15.p.rapidapi.com")
+                            append("X-RapidAPI-Host", "famous-quotes4.p.rapidapi.com")
                             append("X-RapidAPI-Key", BuildConfig.API_KEY)
                         }
                         timeout {
                             requestTimeoutMillis = 10000L
                         }
-                    }.toVo()
+                    }.first().toVo()
                 )
             )
         }
